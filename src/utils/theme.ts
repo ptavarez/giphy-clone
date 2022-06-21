@@ -5,6 +5,15 @@ const theme = createTheme({
 	palette: {
 		mode: 'dark',
 	},
+	components: {
+		MuiButton: {
+			styleOverrides: {
+				textPrimary: {
+					color: '#fff',
+				},
+			},
+		},
+	},
 });
 
 export default theme;
