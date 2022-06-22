@@ -5,7 +5,8 @@ import { GifContext } from '../context';
 import useRequest from '../hooks/use-request';
 
 const SearchBar = () => {
-	const { setError, setGifList, setIsLoading } = useContext(GifContext);
+	const { setError, setGifList, setIsLoading, setTitle } =
+		useContext(GifContext);
 	const [keyword, setKeyword] = useState('');
 	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setKeyword(event.target.value);
@@ -14,15 +15,18 @@ const SearchBar = () => {
 	const { doRequest, error } = useRequest({
 		method: 'get',
 		onSuccess: (res) => {
+			setTitle(keyword);
 			setError(null);
 			setIsLoading(false);
 			setGifList(res.data);
+			setKeyword('');
 		},
 	});
 
 	useEffect(() => {
 		if (error) {
 			setIsLoading(false);
+			setKeyword('');
 			setError(error);
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -41,7 +45,7 @@ const SearchBar = () => {
 				event.preventDefault();
 				setIsLoading(true);
 				doRequest(
-					`https://api.giphy.com/v1/gifs/search?q=${keyword}&api_key=${process.env.REACT_APP_GIPHY_API_KEY}`
+					`https://api.giphy.com/v1/gifs/search?api_key=${process.env.REACT_APP_GIPHY_API_KEY}&q=${keyword}`
 				);
 			}}
 		>

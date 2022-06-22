@@ -12,6 +12,7 @@ const GifContainer = () => {
 				maxWidth: '100vw',
 				flexWrap: 'wrap',
 				justifyContent: 'center',
+				overflow: 'hidden',
 			}}
 		>
 			{gifList?.map((gif) => (

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Alert, Box, CircularProgress } from '@mui/material';
+import { Alert, Box, CircularProgress, Typography } from '@mui/material';
 import { IGif } from '@giphy/js-types';
 import { GifState } from './context';
 import GifContainer from './components/GifContainer';
@@ -8,9 +8,10 @@ import SearchBar from './components/SearchBar';
 import useRequest from './hooks/use-request';
 
 export default function App() {
-	const [gifList, setGifList] = useState<IGif[]>([]);
+	const [gifList, setGifList] = useState<IGif[] | null>(null);
 	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState<Error | null>(null);
+	const [title, setTitle] = useState('');
 	const isGifListEmpty = gifList?.length === 0;
 
 	const { doRequest, error: trendingError } = useRequest({
@@ -45,14 +46,16 @@ export default function App() {
 				error,
 				gifList,
 				isLoading,
+				title,
 				setError,
 				setGifList,
 				setIsLoading,
+				setTitle,
 			}}
 		>
 			<Layout>
 				<SearchBar />
-				<Box sx={{ minHeight: '100vh' }}>
+				<Box sx={{ minHeight: 'calc(100vh - 37px)' }}>
 					{isGifListEmpty && <Alert severity='info'>No results found</Alert>}
 					{error && <Alert severity='error'>{error.message}</Alert>}
 					{isLoading ? (
@@ -66,9 +69,16 @@ export default function App() {
 							<CircularProgress />
 						</Box>
 					) : (
-						<Box sx={{ minHeight: 'calc(100vh - 37px)' }}>
+						<>
+							<Typography
+								variant='h4'
+								component='h1'
+								sx={{ mb: '20px', fontWeight: '900' }}
+							>
+								{title}
+							</Typography>
 							<GifContainer />
-						</Box>
+						</>
 					)}
 				</Box>
 			</Layout>

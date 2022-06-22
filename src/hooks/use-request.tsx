@@ -1,7 +1,6 @@
-import axios, { AxiosError } from 'axios';
 import { useState } from 'react';
-
-const DEFAULT_URL = `/treding?api_key=${process.env.REACT_APP_GIPHY_API_KEY}`;
+import axios, { AxiosError } from 'axios';
+import { GREETINGS_URL } from '../utils/constants';
 
 interface UseRequestParams {
 	method: 'get' | 'post' | 'put' | 'delete';
@@ -18,7 +17,7 @@ const useRequest = ({ method, data, onSuccess }: UseRequestParams) => {
 			setError(null);
 			const response = await axios({
 				baseURL: 'https://api.giphy.com/v1/gifs/',
-				url: url || DEFAULT_URL,
+				url: url || GREETINGS_URL,
 				data,
 				method,
 			});
