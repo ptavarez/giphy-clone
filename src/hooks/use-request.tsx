@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { useState } from 'react';
 
 interface UseRequestParams {
@@ -10,7 +10,7 @@ interface UseRequestParams {
 }
 
 const useRequest = ({ url, method, data, onSuccess }: UseRequestParams) => {
-	const [errors, setErrors] = useState<null | []>(null);
+	const [errors, setErrors] = useState<AxiosError | null>(null);
 
 	const doRequest = async () => {
 		try {
