@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from 'react';
 import { IconButton, InputBase, Paper } from '@mui/material';
 import Search from '@mui/icons-material/Search';
 import { GifContext } from '../context';
-import useRequest from '../hooks/use-request';
+import { useRequest } from '../hooks';
 
 const SearchBar = () => {
 	const { setError, setGifList, setIsLoading, setTitle } =

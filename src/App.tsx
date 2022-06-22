@@ -2,10 +2,10 @@ import { useEffect, useState } from 'react';
 import { Alert, Box, CircularProgress, Typography } from '@mui/material';
 import { IGif } from '@giphy/js-types';
 import { GifState } from './context';
+import { useRequest } from './hooks';
 import GifContainer from './components/GifContainer';
 import Layout from './components/Layout';
 import SearchBar from './components/SearchBar';
-import useRequest from './hooks/use-request';
 
 export default function App() {
 	const [gifList, setGifList] = useState<IGif[] | null>(null);
@@ -55,7 +55,7 @@ export default function App() {
 		>
 			<Layout>
 				<SearchBar />
-				<Box sx={{ minHeight: 'calc(100vh - 37px)' }}>
+				<Box sx={{ minHeight: 'calc(100vh - 40px)' }}>
 					{isGifListEmpty && <Alert severity='info'>No results found</Alert>}
 					{error && <Alert severity='error'>{error.message}</Alert>}
 					{isLoading ? (

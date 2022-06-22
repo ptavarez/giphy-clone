@@ -2,7 +2,7 @@ import { useContext, useEffect } from 'react';
 import { Box, Button, Link } from '@mui/material';
 import { IGif } from '@giphy/js-types';
 import { GifContext } from '../../context';
-import useRequest from '../../hooks/use-request';
+import { useRequest, useWindowDimensions } from '../../hooks';
 import giphyLogo from '../../assets/giphyLogo-27.png';
 import {
 	MOTIVATION_URL,
@@ -13,7 +13,6 @@ import {
 const Header = () => {
 	const { setError, setGifList, setIsLoading, setTitle } =
 		useContext(GifContext);
-
 	const { doRequest, error } = useRequest({
 		method: 'get',
 		onSuccess: (res: { data: IGif[] }) => {
@@ -22,6 +21,8 @@ const Header = () => {
 			setGifList(res.data);
 		},
 	});
+	const { width } = useWindowDimensions();
+	const isMobile = width >= 425;
 
 	useEffect(() => {
 		if (error) {
@@ -71,18 +72,21 @@ const Header = () => {
 					display: 'flex',
 					alignItems: 'center',
 					justifyContent: 'space-between',
+					height: '35px',
 				}}
 			>
 				<Box>
 					<img src={giphyLogo} alt='Giphy Logo' />
 				</Box>
-				<Box>
-					<Button onClick={() => handleClick(TRENDING_URL)}>Trending</Button>
-					<Button onClick={() => handleClick(MOTIVATION_URL)}>
-						Motivation
-					</Button>
-					<Button onClick={() => handleClick(RANDOM_URL)}>Random</Button>
-				</Box>
+				{isMobile && (
+					<Box>
+						<Button onClick={() => handleClick(TRENDING_URL)}>Trending</Button>
+						<Button onClick={() => handleClick(MOTIVATION_URL)}>
+							Motivation
+						</Button>
+						<Button onClick={() => handleClick(RANDOM_URL)}>Random</Button>
+					</Box>
+				)}
 			</Box>
 		</header>
 	);
