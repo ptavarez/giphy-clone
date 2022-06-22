@@ -1,14 +1,37 @@
-import { useState } from 'react';
-import Paper from '@mui/material/Paper';
-import InputBase from '@mui/material/InputBase';
-import { IconButton } from '@mui/material';
+import { useEffect, useState } from 'react';
+import { IconButton, InputBase, Paper } from '@mui/material';
 import Search from '@mui/icons-material/Search';
+import { IGif } from '@giphy/js-types';
+import useRequest from '../hooks/use-request';
 
-const SearchBar = () => {
+interface SearchBarProps {
+	setErrors: (error: Error | null) => void;
+	setGifList: (gifList: IGif[]) => void;
+	setIsLoading: (isLoading: boolean) => void;
+}
+
+const SearchBar = ({ setErrors, setGifList, setIsLoading }: SearchBarProps) => {
 	const [keyword, setKeyword] = useState('');
 	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setKeyword(event.target.value);
 	};
+
+	const { doRequest, errors } = useRequest({
+		method: 'get',
+		onSuccess: (res) => {
+			setErrors(null);
+			setIsLoading(false);
+			setGifList(res.data);
+		},
+	});
+
+	useEffect(() => {
+		if (errors) {
+			setIsLoading(false);
+			setErrors(errors);
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [errors]);
 
 	return (
 		<Paper
@@ -18,6 +41,13 @@ const SearchBar = () => {
 				alignItems: 'center',
 				m: '20px 0',
 				p: '2px',
+			}}
+			onSubmit={(event: React.FormEvent) => {
+				event.preventDefault();
+				setIsLoading(true);
+				doRequest(
+					`https://api.giphy.com/v1/gifs/search?q=${keyword}&api_key=${process.env.REACT_APP_GIPHY_API_KEY}`
+				);
 			}}
 		>
 			<InputBase

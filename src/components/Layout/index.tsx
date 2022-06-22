@@ -8,7 +8,7 @@ interface LayoutProps {
 
 const Layout = ({ children }: LayoutProps) => {
 	return (
-		<Container sx={{ m: '0 auto', p: '10px' }}>
+		<Container maxWidth={false} sx={{ m: '0 auto', p: '10px' }}>
 			<Header />
 			<main id='main'>{children}</main>
 			<Footer />
