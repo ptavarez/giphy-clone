@@ -22,7 +22,7 @@ const Header = () => {
 		},
 	});
 	const { width } = useWindowDimensions();
-	const isMobile = width >= 425;
+	const isMobile = width >= 440;
 
 	useEffect(() => {
 		if (error) {
