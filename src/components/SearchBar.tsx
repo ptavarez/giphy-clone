@@ -1,37 +1,32 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { IconButton, InputBase, Paper } from '@mui/material';
 import Search from '@mui/icons-material/Search';
-import { IGif } from '@giphy/js-types';
+import { GifContext } from '../context';
 import useRequest from '../hooks/use-request';
 
-interface SearchBarProps {
-	setErrors: (error: Error | null) => void;
-	setGifList: (gifList: IGif[]) => void;
-	setIsLoading: (isLoading: boolean) => void;
-}
-
-const SearchBar = ({ setErrors, setGifList, setIsLoading }: SearchBarProps) => {
+const SearchBar = () => {
+	const { setError, setGifList, setIsLoading } = useContext(GifContext);
 	const [keyword, setKeyword] = useState('');
 	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setKeyword(event.target.value);
 	};
 
-	const { doRequest, errors } = useRequest({
+	const { doRequest, error } = useRequest({
 		method: 'get',
 		onSuccess: (res) => {
-			setErrors(null);
+			setError(null);
 			setIsLoading(false);
 			setGifList(res.data);
 		},
 	});
 
 	useEffect(() => {
-		if (errors) {
+		if (error) {
 			setIsLoading(false);
-			setErrors(errors);
+			setError(error);
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [errors]);
+	}, [error]);
 
 	return (
 		<Paper
